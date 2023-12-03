@@ -1,3 +1,5 @@
+# 2-Tier E-Commerce App Deployment
+
 This simple E-Commerce website was my first app deployment.
 The project was made with the LAMP stack but instead of MySql I used Maria db.
 LAMP stands for Linux, Apache, MySql/MariaDB, php.
