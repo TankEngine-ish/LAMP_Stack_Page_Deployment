@@ -1,125 +1,43 @@
-# Introduction
+This simple E-Commerce website was my first app deployment.
+The project was made with the LAMP stack but instead of MySql I used Maria db.
+LAMP stands for Linux, Apache, MySql/MariaDB, php.
 
-This is a sample e-commerce application built for learning purposes.
+I decided to put a little spin on this task and made it entirely inside a CentOS VM with Vagrant and Oracle Virtual Box. It took a little setting-up but in the end it all worked out.
 
-Here's how to deploy it on CentOS systems:
+Disclaimer: The javascript and the php logic/interface weren't done by me. My only interaction with them is editing a few lines of texts. All credit goes to KodeKloud.
 
-## Deploy Pre-Requisites
+### Stage 1 - Setting up my VM:
 
-1. Install FirewallD
+On my Ubuntu host machine I grabbed a Vagrant box of CentOS9 and ran it through my Oracle Virtual Box. As you can see it's up and running.
 
-```
-sudo yum install -y firewalld
-sudo systemctl start firewalld
-sudo systemctl enable firewalld
-sudo systemctl status firewalld
-```
-
-## Deploy and Configure Database
-
-1. Install MariaDB
-
-```
-sudo yum install -y mariadb-server
-sudo vi /etc/my.cnf
-sudo systemctl start mariadb
-sudo systemctl enable mariadb
-```
-
-2. Configure firewall for Database
-
-```
-sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp
-sudo firewall-cmd --reload
-```
-
-3. Configure Database
-
-```
-$ mysql
-MariaDB > CREATE DATABASE ecomdb;
-MariaDB > CREATE USER 'ecomuser'@'localhost' IDENTIFIED BY 'ecompassword';
-MariaDB > GRANT ALL PRIVILEGES ON *.* TO 'ecomuser'@'localhost';
-MariaDB > FLUSH PRIVILEGES;
-```
-
-> ON a multi-node setup remember to provide the IP address of the web server here: `'ecomuser'@'web-server-ip'`
-
-4. Load Product Inventory Information to database
-
-Create the db-load-script.sql
-
-```
-cat > db-load-script.sql <<-EOF
-USE ecomdb;
-CREATE TABLE products (id mediumint(8) unsigned NOT NULL auto_increment,Name varchar(255) default NULL,Price varchar(255) default NULL, ImageUrl varchar(255) default NULL,PRIMARY KEY (id)) AUTO_INCREMENT=1;
-
-INSERT INTO products (Name,Price,ImageUrl) VALUES ("Laptop","100","c-1.png"),("Drone","200","c-2.png"),("VR","300","c-3.png"),("Tablet","50","c-5.png"),("Watch","90","c-6.png"),("Phone Covers","20","c-7.png"),("Phone","80","c-8.png"),("Laptop","150","c-4.png");
-
-EOF
-```
-
-Run sql script
-
-```
-
-sudo mysql < db-load-script.sql
-```
+[image]
 
 
-## Deploy and Configure Web
+Then I got the ssh configuration of my Vagrant's VM and used it to SSH from Ubuntu to the CentOS. With the help of the Remote SSH extension in my VsCode I managed to clone the e-commerce repo and load it into my IDE. It's worth mentioning that I still had to generate an SSH key for my github.
 
-1. Install required packages
 
-```
-sudo yum install -y httpd php php-mysqlnd
-sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
-sudo firewall-cmd --reload
-```
+[image]
 
-2. Configure httpd
 
-Change `DirectoryIndex index.html` to `DirectoryIndex index.php` to make the php page the default page
+### Stage 2 - Database and Firewall
 
-```
-sudo sed -i 's/index.html/index.php/g' /etc/httpd/conf/httpd.conf
-```
+The first step into deployment was configuring firewalld which is a dynamic firewall management tool. It's a high-level device that abstracts away the manual manipulating of iptable rules which I am not yet familiar with to be honest. 
+I used it to split up the traffic ports in two:
 
-3. Start httpd
+One for the MariaDB so the web application communicates with the database server.
+I set it to the default: 3306 (TCP).
 
-```
-sudo systemctl start httpd
-sudo systemctl enable httpd
-```
+One for the HTTP traffic:
+I set it to the default: 80 (TCP).
 
-4. Download code
+The second step into deployment and chill was installing and configuring mariaDB.
+There's not much more to it. I created a database called 'ecomdb' and then a user with all privileges. After that I loaded a sql script containing the inventory information to the database.
 
-```
-sudo yum install -y git
-sudo git clone https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
-```
+[image of db]
 
-5. Update index.php
 
-Update [index.php](https://github.com/kodekloudhub/learning-app-ecommerce/blob/13b6e9ddc867eff30368c7e4f013164a85e2dccb/index.php#L107) file to connect to the right database server. In this case `localhost` since the database is on the same server.
+### Stage 3 - Configuring the Apache server
 
-```
-sudo sed -i 's/172.20.1.101/localhost/g' /var/www/html/index.php
+As you can see this wasn't that much of a hassle either. You just have to make sure that you connect it to the databse and then configure the the httpd to load the index.php page in the web app.
 
-              <?php
-                        $link = mysqli_connect('172.20.1.101', 'ecomuser', 'ecompassword', 'ecomdb');
-                        if ($link) {
-                        $res = mysqli_query($link, "select * from products;");
-                        while ($row = mysqli_fetch_assoc($res)) { ?>
-```
-
-> ON a multi-node setup remember to provide the IP address of the database server here.
-```
-sudo sed -i 's/172.20.1.101/localhost/g' /var/www/html/index.php
-```
-
-6. Test
-
-```
-curl http://localhost
-```
+[image of running server]
