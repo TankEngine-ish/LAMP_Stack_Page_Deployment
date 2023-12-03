@@ -8,6 +8,9 @@ I decided to put a little spin on this task and made it entirely inside a CentOS
 
 Disclaimer: The javascript and the php logic/interface weren't done by me. My only interaction with them is editing a few lines of texts. All credit goes to KodeKloud.
 
+
+![main page](/home/plamen/Desktop/gifIndex.gif)
+
 ### Stage 1 - Setting up my VM:
 
 On my Ubuntu host machine I grabbed a Vagrant box of CentOS9 and ran it through my Oracle Virtual Box. As you can see it's up and running.
