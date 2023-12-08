@@ -13,15 +13,9 @@ Disclaimer: The javascript and the php logic/interface weren't done by me. My on
 
 ### Stage 1 - Setting up my VM:
 
-On my Ubuntu host machine I grabbed a Vagrant box of CentOS9 and ran it through my Oracle Virtual Box. As you can see it's up and running.
-
-[image]
-
+On my Ubuntu host machine I grabbed a Vagrant box of CentOS9 and ran it through my Oracle Virtual Box. 
 
 Then I got the ssh configuration of my Vagrant's VM and used it to SSH from Ubuntu to the CentOS. With the help of the Remote SSH extension in my VsCode I managed to clone the e-commerce repo and load it into my IDE. It's worth mentioning that I still had to generate an SSH key for my github.
-
-
-[image]
 
 
 ### Stage 2 - Database and Firewall
@@ -38,11 +32,8 @@ I set it to the default: 80 (TCP).
 The second step into deployment and chill was installing and configuring mariaDB.
 There's not much more to it. I created a database called 'ecomdb' and then a user with all privileges. After that I loaded a sql script containing the inventory information to the database.
 
-[image of db]
-
 
 ### Stage 3 - Configuring the Apache server
 
 As you can see this wasn't that much of a hassle either. You just have to make sure that you connect it to the databse and then configure the the httpd to load the index.php page in the web app.
 
-[image of running server]
