@@ -9,7 +9,7 @@ I decided to put a little spin on this task and made it entirely inside a CentOS
 Disclaimer: The javascript and the php logic/interface weren't done by me. My only interaction with them is editing a few lines of texts. All credit goes to KodeKloud.
 
 
-![Alt text] (https://github.com/TankEngine-ish/E-Commerce_Deployment/blob/main/gifIndex.gif?raw=true)
+![Alt text](./home/plamen/E-Commerce_Deployment/gifIndex.gif)
 
 ### Stage 1 - Setting up my VM:
 
