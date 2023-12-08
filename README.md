@@ -9,7 +9,7 @@ I decided to put a little spin on this task and made it entirely inside a CentOS
 Disclaimer: The javascript and the php logic/interface weren't done by me. My only interaction with them is editing a few lines of texts. All credit goes to KodeKloud.
 
 
-![Alt text](./home/plamen/E-Commerce_Deployment/gifIndex.gif)
+![Alt text](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXZjcG00ejR5enJncGxyampqcGtjOW1nbmVrY3pwOTQ4Z3kyZDU2eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OBUw3FF5iokzLg4BG0/giphy.gif) 
 
 ### Stage 1 - Setting up my VM:
 
