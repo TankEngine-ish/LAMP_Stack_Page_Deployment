@@ -9,7 +9,7 @@ I decided to put a little spin on this task and made it entirely inside a CentOS
 Disclaimer: The javascript and the php logic/interface weren't done by me. My only interaction with them is editing a few lines of texts. All credit goes to KodeKloud.
 
 
-![main page](/home/plamen/Desktop/gifIndex.gif)
+![Alt text](/home/Downloads/gifIndex.gif)
 
 ### Stage 1 - Setting up my VM:
 
