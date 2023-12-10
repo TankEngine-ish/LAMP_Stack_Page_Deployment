@@ -1,37 +1,50 @@
-function print_green(){
-    GREEN="\033[0;32m"
-    NO_COLOR="\033[0m"
+function print_color(){
+    case $1 in 
+    "green") COLOR="\033[0;32m" ;;
+    "red") COLOR="\033[0;31m" ;;
+    "*") COLOR="\033[0m" ;;
+    esac
+    echo -e "${COLOR}$1${NO_COLOR}"
 
-    echo -e "${GREEN}$1${NO_COLOR}"
 }
+
+
 
 # ------------------- Database Configuration -------------------------
 
 # Install and configure firewallD
-print_green "Installing firewalld..."
+print_color "green" "Installing firewalld..."
 
 sudo yum install -y firewalld
 sudo systemctl start firewalld
 sudo systemctl enable firewalld
 
-sudo systemctl
+is_firewalld_active=$(systemctl is-active firewalld)
+
+if [ $is_firewalld_active = "active" ]
+then
+    print_color "green" "Firewalld Service is active"
+else
+    print_color "red" "FirewallD Service is not active"
+    exit 1
+fi
 
 
 # Install and configure MariaDB
-print_green "Installing MariaDB..."
+print_color "green" "Installing MariaDB..."
 sudo yum install -y mariadb-server
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
 
 
 # Add firewallD rules for database
-print_green "Adding Firewall rules for db..."
+print_color "green" "Adding Firewall rules for db..."
 sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp
 sudo firewall-cmd --reload
 
 
 # Configure Database 
-print_green "Configuring DB..."
+print_color "green" "Configuring DB..."
 
 cat > db_config.sql <<-EOF
 MariaDB > CREATE DATABASE ecomdb;
@@ -43,7 +56,7 @@ EOF
 sudo mysql < db_config.sql
 
 # Load inventory data into database
-print_green "Loading inventory data into DB..."
+print_color "green" "Loading inventory data into DB..."
 cat > db-load-script.sql <<-EOF
 USE ecomdb;
 CREATE TABLE products (id mediumint(8) unsigned NOT NULL auto_increment,Name varchar(255) default NULL,Price varchar(255) default NULL, ImageUrl varchar(255) default NULL,PRIMARY KEY (id)) AUTO_INCREMENT=1;
@@ -57,11 +70,11 @@ sudo mysql < db-load-script.sql
 
 
 # ------------------- Web Server Configuration -------------------------
-print_green "Configuring Web Server..."
+print_color "green" "Configuring Web Server..."
 # Install Apache web server and php
 sudo yum install -y httpd php php-mysqlnd
 
-print_green "Configuring firewallD rules for web server..."
+print_color "green" "Configuring firewallD rules for web server..."
 # Configure firewallD rules for web server
 sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
 sudo firewall-cmd --reload
@@ -69,7 +82,7 @@ sudo firewall-cmd --reload
 sudo sed -i 's/index.html/index.php/g' /etc/httpd/conf/httpd.conf
 
 # Start and enable http service
-print_green "Starting web server..."
+print_color "green" "Starting web server..."
 sudo systemctl start httpd
 sudo systemctl enable httpd
 
@@ -77,7 +90,7 @@ sudo systemctl enable httpd
 sudo sed -i 's/172.20.1.101/localhost/g' /var/www/html/index.php
 
 
-print_green "All gone!"
+print_color "green" "All gone!"
 
 curl http://localhost
 
