@@ -18,7 +18,7 @@ function print_color(){
     "red") COLOR="\033[0;31m" ;;
     "*") COLOR="\033[0m" ;;
     esac
-    echo -e "${COLOR}$1${NO_COLOR}"
+    echo -e "${COLOR}$2${no_color}"
 }
 
 #######################################
@@ -137,7 +137,7 @@ sudo mysql < db-load-script.sql
 
 mysql_db_results=$(sudo mysql -e "use ecomdb; select * from products;")
 
-if [[ $Mysql_db_results = *Laptop* ]]
+if [[ $mysql_db_results = *Laptop* ]]
 then
     print_color "green" "Inventory data loaded"
 else
@@ -183,4 +183,3 @@ for item in Laptop Drone VR Watch
 do
     check_item "$web_page" $item
 done
-
