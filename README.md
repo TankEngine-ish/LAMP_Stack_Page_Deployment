@@ -11,14 +11,14 @@ Disclaimer: The javascript and the php logic/interface weren't done by me. My on
 
 ![Alt text](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXZjcG00ejR5enJncGxyampqcGtjOW1nbmVrY3pwOTQ4Z3kyZDU2eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OBUw3FF5iokzLg4BG0/giphy.gif)
 
-### Stage 1 - Setting up my VM:
+## Stage 1 - Setting up my VM:
 
 On my Ubuntu host machine I grabbed a Vagrant box of CentOS9 and ran it through my Oracle Virtual Box. 
 
 Then I got the ssh configuration of my Vagrant's VM and used it to SSH from Ubuntu to the CentOS. With the help of the Remote SSH extension in my VsCode I managed to clone the e-commerce repo and load it into my IDE. It's worth mentioning that I still had to generate an SSH key for my github.
 
 
-### Stage 2 - Database and Firewall
+## Stage 2 - Database and Firewall
 
 The first step into deployment was configuring firewalld which is a dynamic firewall management tool. It's a high-level device that abstracts away the manual manipulating of iptable rules which I am not yet familiar with to be honest. 
 I used it to split up the traffic ports in two:
@@ -33,7 +33,13 @@ The second step into deployment and chill was installing and configuring mariaDB
 There's not much more to it. I created a database called 'ecomdb' and then a user with all privileges. After that I loaded a sql script containing the inventory information to the database.
 
 
-### Stage 3 - Configuring the Apache server
+## Stage 3 - Configuring the Apache server
 
 As you can see this wasn't that much of a hassle either. You just have to make sure that you connect it to the databse and then configure the the httpd to load the index.php page in the web app.
+
+Regarding the long Bash script I wrote for the whole deployment it is worth noting that such 100+ lines scripts are rarely being done in Bash. In a professional environment anything that's more than 25-30 lines of code can be done in Python, GO or Ruby. Anything less can still be done in Bash.
+
+## Stage 4 - How I did it! (VIDEO)
+
+You can check the details of how I did this project on my personal website: 
 
